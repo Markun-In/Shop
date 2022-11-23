@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Identity_in_MVC_Task.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Identity_in_MVC_Task.Data
@@ -9,5 +10,6 @@ namespace Identity_in_MVC_Task.Data
             : base(options)
         {
         }
+        public DbSet<Product> Product { get; set; }
     }
 }
