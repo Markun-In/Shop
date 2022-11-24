@@ -12,7 +12,10 @@ namespace Identity_in_MVC_Task.Models
         [Display(Name = "Автомобили")]
         Cars,
         [Display(Name = "Одежда")]
-        Clothes
+        Clothes,
+        [Display(Name = "Искусство")]
+        Art
+
     }
 
 }

@@ -28,9 +28,8 @@ namespace Identity_in_MVC_Task.Models
         [Display(Name = "Цена товара")]
         public decimal Price { get; set; }
 
-        [Required]
         [Display(Name = "Фото товара")]
-        public byte[] ProductPicture { get; set; }
+        public byte[]? ProductPicture { get; set; }
 
         //public IdentityUser User { get; set; }
 

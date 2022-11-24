@@ -1,13 +1,19 @@
-﻿@model IEnumerable<Identity_in_MVC_Task.Models.Product>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model IEnumerable<Identity_in_MVC_Task.Models.Product>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Объявления</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <a asp-action="Create">Создать новое объявление</a>
+    }
 </p>
 <table class="table">
     <thead>
@@ -19,8 +25,11 @@
                 @Html.DisplayNameFor(model => model.Category)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                @Html.DisplayNameFor(model => model.ProductPicture)
             </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.Price)
             </th>
@@ -36,17 +45,34 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Category)
             </td>
-            <td>
+                <td>
+                    @if (item.ProductPicture != null)
+                    {
+                        <img id="ProductPicture" style="width:230px;height:180px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(item.ProductPicture))">
+                    }
+                    else
+                    {
+                        <text>Фото отсутствует</text>
+                    }
+                </td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.Description)
-            </td>
+            </td>*@
             <td>
-                @Html.DisplayFor(modelItem => item.Price)
+                @Html.DisplayFor(modelItem => item.Price) руб.
             </td>
+                @if (SignInManager.IsSignedIn(User) && (User.Identity.Name == "1")){
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Просмотр</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
             </td>
+                } else
+                {
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id">Просмотр</a>
+                    </td>
+                }
         </tr>
 }
     </tbody>

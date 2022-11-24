@@ -31,6 +31,24 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="ProductPicture" style="width: 100%;" class="control-label"></label>
+                @if (Model.ProductPicture != null)
+                {
+                    <img id="ProductPicture" style="width:350px;height:350px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(Model.ProductPicture))">
+                }
+                else
+                {
+                    <text>Фото отсутствует</text>
+                }
+                <input type="file"
+                       accept=".png,.jpg,.jpeg"
+                       asp-for="ProductPicture"
+                       class="form-control"
+                       style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px;"
+                       onchange="document.getElementById('profilePicture').src = window.URL.createObjectURL(this.files[0])" />
+                <span asp-validation-for="ProductPicture" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
