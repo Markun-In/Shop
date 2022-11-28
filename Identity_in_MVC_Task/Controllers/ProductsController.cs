@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Identity_in_MVC_Task.Data;
 using Identity_in_MVC_Task.Models;
+using System.Security.Claims;
 
 namespace Identity_in_MVC_Task.Controllers
 {
@@ -63,10 +64,11 @@ namespace Identity_in_MVC_Task.Controllers
                     IFormFile file = Request.Form.Files.FirstOrDefault();
                     using (var dataStream = new MemoryStream())
                     {
-                        await file.CopyToAsync(dataStream);
+                        file.CopyToAsync(dataStream);
                         product.ProductPicture = dataStream.ToArray();
                     }
                 }
+                product.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -101,9 +103,18 @@ namespace Identity_in_MVC_Task.Controllers
             {
                 return NotFound();
             }
-
+            product.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (ModelState.IsValid)
             {
+                if(Request.Form.Files.Count > 0)
+                {
+                    IFormFile file = Request.Form.Files.FirstOrDefault();
+                    using (var dataStream = new MemoryStream())
+                    {
+                        file.CopyToAsync(dataStream);
+                        product.ProductPicture = dataStream.ToArray();
+                    }
+                }
                 try
                 {
                     _context.Update(product);

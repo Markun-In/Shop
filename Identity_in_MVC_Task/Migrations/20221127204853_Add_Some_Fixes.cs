@@ -5,44 +5,58 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Identity_in_MVC_Task.Migrations
 {
-    public partial class Add_ProductPicture : Migration
+    public partial class Add_Some_Fixes : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "Name",
+                name: "UserId",
                 table: "Product",
-                type: "varchar(60)",
-                maxLength: 60,
-                nullable: false,
+                type: "longtext",
+                nullable: true,
                 oldClrType: typeof(string),
                 oldType: "longtext")
                 .Annotation("MySql:CharSet", "utf8mb4")
                 .OldAnnotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.AddColumn<byte[]>(
+            migrationBuilder.AlterColumn<byte[]>(
                 name: "ProductPicture",
                 table: "Product",
                 type: "longblob",
-                nullable: false);
+                nullable: true,
+                oldClrType: typeof(byte[]),
+                oldType: "longblob");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "ProductPicture",
-                table: "Product");
+            migrationBuilder.UpdateData(
+                table: "Product",
+                keyColumn: "UserId",
+                keyValue: null,
+                column: "UserId",
+                value: "");
 
             migrationBuilder.AlterColumn<string>(
-                name: "Name",
+                name: "UserId",
                 table: "Product",
                 type: "longtext",
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "varchar(60)",
-                oldMaxLength: 60)
+                oldType: "longtext",
+                oldNullable: true)
                 .Annotation("MySql:CharSet", "utf8mb4")
                 .OldAnnotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.AlterColumn<byte[]>(
+                name: "ProductPicture",
+                table: "Product",
+                type: "longblob",
+                nullable: false,
+                defaultValue: new byte[0],
+                oldClrType: typeof(byte[]),
+                oldType: "longblob",
+                oldNullable: true);
         }
     }
 }

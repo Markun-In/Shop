@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -26,12 +25,13 @@ namespace Identity_in_MVC_Task.Models
 
         [Required]
         [Display(Name = "Цена товара")]
-        public decimal Price { get; set; }
+        public double Price { get; set; }
 
+        
         [Display(Name = "Фото товара")]
         public byte[]? ProductPicture { get; set; }
 
-        //public IdentityUser User { get; set; }
+        public string? UserId { get; set; }
 
     }
 }

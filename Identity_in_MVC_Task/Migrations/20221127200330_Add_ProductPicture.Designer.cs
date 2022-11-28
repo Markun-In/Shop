@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Identity_in_MVC_Task.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221123133830_Initial1")]
-    partial class Initial1
+    [Migration("20221127200330_Add_ProductPicture")]
+    partial class Add_ProductPicture
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -36,10 +36,14 @@ namespace Identity_in_MVC_Task.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(60)
+                        .HasColumnType("varchar(60)");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(65,30)");
+                    b.Property<double>("Price")
+                        .HasColumnType("double");
+
+                    b.Property<byte[]>("ProductPicture")
+                        .HasColumnType("longblob");
 
                     b.HasKey("Id");
 
