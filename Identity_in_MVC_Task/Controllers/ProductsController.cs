@@ -64,7 +64,7 @@ namespace Identity_in_MVC_Task.Controllers
                     IFormFile file = Request.Form.Files.FirstOrDefault();
                     using (var dataStream = new MemoryStream())
                     {
-                        file.CopyToAsync(dataStream);
+                        file.CopyTo(dataStream);
                         product.ProductPicture = dataStream.ToArray();
                     }
                 }
