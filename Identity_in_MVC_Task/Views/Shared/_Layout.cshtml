@@ -19,11 +19,23 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
+                        @*<li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Главная страница</a>
+                        </li>*@
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Главная</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Объявления</a>
+                            <a class="nav-link text-dark" asp-action="Index" asp-route-sortOrder="@ViewData["Electronic"]">Электроника</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-action="Index" asp-route-sortOrder="@ViewData["Cars"]">Автомобили</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-action="Index" asp-route-sortOrder="@ViewData["Clothes"]">Одежда</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-action="Index" asp-route-sortOrder="@ViewData["Art"]">Искусство</a>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />

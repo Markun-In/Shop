@@ -27,8 +27,11 @@ namespace Identity_in_MVC_Task.Controllers
             ViewData["NameSort"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["PriceSort"] = sortOrder == "price_asc" ? "price_desc" : "price_asc";
             ViewData["CategorySort"] = sortOrder == "category_asc" ? "" : "category_asc";
-
-            if(searchString != null)
+            ViewData["Electronic"] = "electronic";
+            ViewData["Cars"] = "cars";
+            ViewData["Clothes"] = "clothes";
+            ViewData["Art"] = "art";
+            if (searchString != null)
             {
                 pageNumber = 1;
             }
@@ -61,6 +64,18 @@ namespace Identity_in_MVC_Task.Controllers
                     break;
                 case "category_desc":
                     products = products.OrderBy(p => p.Category);
+                    break;
+                case "electronic":
+                    products = products.Where(p => p.Category == Category.Electronics);
+                    break;
+                case "cars":
+                    products = products.Where(p => p.Category == Category.Cars);
+                    break;
+                case "clothes":
+                    products = products.Where(p => p.Category == Category.Clothes);
+                    break;
+                case "art":
+                    products = products.Where(p => p.Category == Category.Art);
                     break;
                 default:
                     products = products.OrderBy(p => p.Name);
