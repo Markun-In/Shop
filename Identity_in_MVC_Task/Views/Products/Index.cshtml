@@ -1,7 +1,8 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using Identity_in_MVC_Task.Data;
+@using Microsoft.AspNetCore.Identity
 @using System.Security.Claims;
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 @model PaginatedList<Identity_in_MVC_Task.Models.Product>
 
 @{
@@ -13,7 +14,7 @@
 <p>
     @if (SignInManager.IsSignedIn(User))
     {
-        <a asp-action="Create">Создать новое объявление</a>
+        <a class="btn btn-success" asp-action="Create">Создать новое объявление </a>
     }
 </p>
 <form asp-action="Index" method="get">
@@ -32,7 +33,6 @@
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSort"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Название товара</a>
             </th>
-            
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["CategorySort"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Категория товара</a>
             </th>
@@ -54,32 +54,32 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Category)
             </td>
-                <td>
-                    @if (item.ProductPicture != null)
-                    {
-                        <img id="ProductPicture" style="width:290px;height:180px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(item.ProductPicture))">
-                    }
-                    else
-                    {
-                        <text>Фото отсутствует</text>
-                    }
-                </td>
+            <td>
+                @if (item.ProductPicture != null)
+                {
+                    <img id="ProductPicture" style="width:290px;height:180px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(item.ProductPicture))">
+                }
+                else
+                {
+                    <text>Фото отсутствует</text>
+                }
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Price) руб.
             </td>
-                @if (SignInManager.IsSignedIn(User) && item.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
-                {
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Просмотр</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
-            </td>
-                } else
-                {
-                    <td>
-                        <a asp-action="Details" asp-route-id="@item.Id">Просмотр</a>
-                    </td>
-                }
+            @if (SignInManager.IsSignedIn(User) && item.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                <td>
+                    <a asp-action="Edit" class="btn btn-light" asp-route-id="@item.Id">Изменить</a> |
+                    <a asp-action="Details" class="btn btn-light" asp-route-id="@item.Id">Просмотр</a> |
+                    <a asp-action="Delete" class="btn btn-light" asp-route-id="@item.Id">Удалить</a>
+                </td>
+            } else
+            {
+                <td>
+                    <a asp-action="Details" class="btn btn-light" asp-route-id="@item.Id">Просмотр</a>
+                </td>
+            }
         </tr>
 }
     </tbody>

@@ -14,6 +14,7 @@ namespace Identity_in_MVC_Task.Controllers
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
+       
 
         public ProductsController(ApplicationDbContext context)
         {
@@ -31,6 +32,7 @@ namespace Identity_in_MVC_Task.Controllers
             ViewData["Cars"] = "cars";
             ViewData["Clothes"] = "clothes";
             ViewData["Art"] = "art";
+            
             if (searchString != null)
             {
                 pageNumber = 1;
@@ -39,6 +41,11 @@ namespace Identity_in_MVC_Task.Controllers
             {
                 searchString = currentFilter;
             }
+            foreach(var m in _context.Users)
+            {
+                ViewData["Balance"] = m.Balance;
+            }
+            
 
             ViewData["CurrentFilter"] = searchString;
 

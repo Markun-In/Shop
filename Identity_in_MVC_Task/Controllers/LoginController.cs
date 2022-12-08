@@ -14,16 +14,17 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Identity_in_MVC_Task.Models;
 using System.Net.Mail;
+using Identity_in_MVC_Task.Data;
 
 namespace Identity_in_MVC_Task.Controllers
 {
     public class LoginController : Controller
     {  
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginController> _logger;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public LoginController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ILogger<LoginController> logger)
+        public LoginController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ILogger<LoginController> logger)
         {
             _signInManager = signInManager;
             _logger = logger;
