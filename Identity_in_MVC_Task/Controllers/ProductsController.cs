@@ -8,17 +8,19 @@ using Microsoft.EntityFrameworkCore;
 using Identity_in_MVC_Task.Data;
 using Identity_in_MVC_Task.Models;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace Identity_in_MVC_Task.Controllers
 {
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
-       
-
-        public ProductsController(ApplicationDbContext context)
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        
+        public ProductsController(ApplicationDbContext context, SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
+            _signInManager = signInManager;
         }
 
         // GET: Products
@@ -41,12 +43,12 @@ namespace Identity_in_MVC_Task.Controllers
             {
                 searchString = currentFilter;
             }
-            foreach(var m in _context.Users)
-            {
-                ViewData["Balance"] = m.Balance;
-            }
-            
 
+            //ClaimsPrincipal currentUser = this.User;
+            var currentUserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userNowId = _context.Users.Find(currentUserId);
+            ViewData["Balance"] = userNowId.Balance;
+            
             ViewData["CurrentFilter"] = searchString;
 
             var products = from s in _context.Product 
@@ -89,17 +91,20 @@ namespace Identity_in_MVC_Task.Controllers
                     break;
             }
             int pageSize = 5;
+
             return View(await PaginatedList<Product>.CreateAsync(products.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            var currentUserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userNowId = _context.Users.Find(currentUserId);
+            ViewData["Balance"] = userNowId.Balance;
             if (id == null || _context.Product == null)
             {
                 return NotFound();
             }
-
             var product = await _context.Product
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
@@ -113,6 +118,9 @@ namespace Identity_in_MVC_Task.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
+            var currentUserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userNowId = _context.Users.Find(currentUserId);
+            ViewData["Balance"] = userNowId.Balance;
             return View();
         }
 
@@ -145,11 +153,11 @@ namespace Identity_in_MVC_Task.Controllers
         // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+
             if (id == null || _context.Product == null)
             {
                 return NotFound();
             }
-
             var product = await _context.Product.FindAsync(id);
             if (product == null)
             {
@@ -165,6 +173,10 @@ namespace Identity_in_MVC_Task.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Category,Description,ProductPicture,Price")] Product product)
         {
+            var currentUserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userNowId = _context.Users.Find(currentUserId);
+            ViewData["Balance"] = userNowId.Balance;
+
             if (id != product.Id)
             {
                 return NotFound();
@@ -205,11 +217,13 @@ namespace Identity_in_MVC_Task.Controllers
         // GET: Products/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            var currentUserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userNowId = _context.Users.Find(currentUserId);
+            ViewData["Balance"] = userNowId.Balance;
             if (id == null || _context.Product == null)
             {
                 return NotFound();
             }
-
             var product = await _context.Product
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
@@ -242,6 +256,29 @@ namespace Identity_in_MVC_Task.Controllers
         private bool ProductExists(int id)
         {
           return _context.Product.Any(e => e.Id == id);
+        }
+
+       
+        public IActionResult Buy(int? id)
+        {
+            var product = _context.Product.Find(id);//
+            var userPay = _context.Users.Find(ClaimTypes.NameIdentifier);//Сюда записывается id текущего пользователя
+            var userGetPay = _context.Users.Find(product.UserId);
+
+            if (userPay.Balance - product.Price >= 0)
+            {
+                userPay.Balance = userPay.Balance - product.Price;
+                userGetPay.Balance += product.Price;
+                _context.Update(userGetPay);
+                _context.Update(userPay);
+                _context.SaveChanges();
+            }
+            else
+            {
+                ViewData["Cansel"] = "Недостаточно средств!";
+            }
+            
+            return View(User);
         }
     }
 }

@@ -1,4 +1,8 @@
-﻿@model Identity_in_MVC_Task.Models.Product
+﻿@using Identity_in_MVC_Task.Data;
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims;
+@model Identity_in_MVC_Task.Models.Product
+@inject SignInManager<ApplicationUser> SignInManager
 
 @{
     ViewData["Title"] = "Details";
@@ -54,5 +58,9 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Index">Назад</a>
+    <a asp-action="Index" class="btn btn-dark">Назад</a>
+    @if (SignInManager.IsSignedIn(User) && Model.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+        {
+            <a asp-action="Buy" class="btn btn-success" asp-route-id="@Model.Id">Купить</a>
+        }
 </div>
