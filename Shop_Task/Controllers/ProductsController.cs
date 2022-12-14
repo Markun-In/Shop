@@ -43,12 +43,11 @@ namespace Shop_Task.Controllers
             {
                 searchString = currentFilter;
             }
-
             if (_signInManager.IsSignedIn(User))
             {
-                var currentUserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;//ClaimsPrincipal currentUser = this.User;
-                var userNowId = _context.Users.Find(currentUserId);
-                ViewData["Balance"] = userNowId.Balance;
+                var userNowId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var userNow = _context.Users.Find(userNowId);
+                ViewData["Balance"] = userNow.Balance;
             }
             ViewData["CurrentFilter"] = searchString;
             var products = from s in _context.Product 
@@ -100,9 +99,9 @@ namespace Shop_Task.Controllers
         {
             if (_signInManager.IsSignedIn(User))
             {
-                var currentUserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                var userNowId = _context.Users.Find(currentUserId);
-                ViewData["Balance"] = userNowId.Balance;
+                var userNowId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var userNow = _context.Users.Find(userNowId);
+                ViewData["Balance"] = userNow.Balance;
             }
             if (id == null || _context.Product == null)
             {
@@ -123,9 +122,9 @@ namespace Shop_Task.Controllers
         {
             if (_signInManager.IsSignedIn(User))
             {
-                var currentUserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                var userNowId = _context.Users.Find(currentUserId);
-                ViewData["Balance"] = userNowId.Balance;
+                var userNowId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var userNow = _context.Users.Find(userNowId);
+                ViewData["Balance"] = userNow.Balance;
             }
             return View();
         }
@@ -139,9 +138,9 @@ namespace Shop_Task.Controllers
         {
             if (_signInManager.IsSignedIn(User))
             {
-                var currentUserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                var userNowId = _context.Users.Find(currentUserId);
-                ViewData["Balance"] = userNowId.Balance;
+                var userNowId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var userNow = _context.Users.Find(userNowId);
+                ViewData["Balance"] = userNow.Balance;
             }
             if (ModelState.IsValid)
             {
@@ -186,16 +185,16 @@ namespace Shop_Task.Controllers
         {
             if (_signInManager.IsSignedIn(User))
             {
-                var currentUserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                var userNowId = _context.Users.Find(currentUserId);
-                ViewData["Balance"] = userNowId.Balance;
+                var userNowId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var userNow = _context.Users.Find(userNowId);
+                ViewData["Balance"] = userNow.Balance;
+                product.UserId = userNowId;
             }
 
             if (id != product.Id)
             {
                 return NotFound();
             }
-            product.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (ModelState.IsValid)
             {
                 if(Request.Form.Files.Count > 0)
@@ -233,9 +232,9 @@ namespace Shop_Task.Controllers
         {
             if (_signInManager.IsSignedIn(User))
             {
-                var currentUserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                var userNowId = _context.Users.Find(currentUserId);
-                ViewData["Balance"] = userNowId.Balance;
+                var userNowId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var userNow = _context.Users.Find(userNowId);
+                ViewData["Balance"] = userNow.Balance;
             }
             if (id == null || _context.Product == null)
             {
